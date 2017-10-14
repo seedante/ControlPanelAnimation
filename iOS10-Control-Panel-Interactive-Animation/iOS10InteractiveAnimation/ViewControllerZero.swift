@@ -58,7 +58,7 @@ class ViewControllerZero: UIViewController {
         
         panelView.frame = view.bounds
         panelView.center.y = view.center.y * (3 - 0.5)
-        panelView.backgroundColor = UIColor.gray()
+        panelView.backgroundColor = .gray
         panelView.layer.cornerRadius = 5
         view.addSubview(panelView)
         

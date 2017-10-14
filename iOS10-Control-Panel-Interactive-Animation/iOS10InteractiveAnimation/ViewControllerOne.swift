@@ -34,7 +34,7 @@ class ViewControllerOne: UIViewController {
         
         paneView.frame = view.bounds
         paneView.center.y = view.center.y * (3 - 0.5)
-        paneView.backgroundColor = UIColor.gray()
+        paneView.backgroundColor = .gray
         paneView.layer.cornerRadius = 5
         view.addSubview(paneView)
         

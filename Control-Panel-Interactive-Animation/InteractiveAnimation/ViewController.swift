@@ -21,8 +21,8 @@ class ViewController: UIViewController {
     var panelOpened = true
     
     ///0.5s is too short for interaction, you could set it longer for test.
-    let duration: NSTimeInterval = 0.5
-    let relayDuration: NSTimeInterval = 0.3
+    let duration: TimeInterval = 0.5
+    let relayDuration: TimeInterval = 0.3
     let diff: CGFloat = 150
     var USE_COREANIMATION = false
     
@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         
         panelView.frame = view.bounds
         panelView.center.y = view.center.y * (3 - 0.5)
-        panelView.backgroundColor = UIColor.grayColor()
+        panelView.backgroundColor = UIColor.gray
         panelView.layer.cornerRadius = 5
         view.addSubview(panelView)
         
@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         panelView.addGestureRecognizer(tap)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
 
@@ -52,27 +52,27 @@ class ViewController: UIViewController {
     }
     
     func stopMoveAnimation(){
-        let currentPosition = (panelView.layer.presentationLayer() as! CALayer).position
+        let currentPosition = (panelView.layer.presentation() as! CALayer).position
         panelView.layer.removeAllAnimations()
         panelView.layer.position = currentPosition
     }
 
-    func handlePan(panGesture: UIPanGestureRecognizer){
+    func handlePan(_ panGesture: UIPanGestureRecognizer){
         switch panGesture.state {
-        case .Began:
+        case .began:
             stopMoveAnimation()
-        case .Changed:
-            let point = panGesture.translationInView(view)
-            panelView.center = CGPointMake(panelView.center.x, panelView.center.y + point.y)
-            panGesture.setTranslation(CGPointZero, inView: view)
-        case .Ended, .Cancelled:
-            let gestureVelocity = panGesture.velocityInView(view)
+        case .changed:
+            let point = panGesture.translation(in: view)
+            panelView.center = CGPoint(x: panelView.center.x, y: panelView.center.y + point.y)
+            panGesture.setTranslation(CGPoint.zero, in: view)
+        case .ended, .cancelled:
+            let gestureVelocity = panGesture.velocity(in: view)
             let isUp = gestureVelocity.y < 0 ? true : false
             let targetY = isUp ? view.center.y + diff : view.center.y * 2.5
             let velocity = abs(gestureVelocity.y) / abs(panelView.center.y - targetY)
             
             // Relay leave speed. You should provide .AllowUserInteraction option otherwise your touch can't interact with moving view.
-            UIView.animateWithDuration(relayDuration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: velocity, options: .AllowUserInteraction, animations: {
+            UIView.animate(withDuration: relayDuration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: velocity, options: .allowUserInteraction, animations: {
                 self.panelView.center.y = targetY
                 }, completion: nil)
             self.panelOpened = isUp ? false : true
@@ -80,14 +80,14 @@ class ViewController: UIViewController {
         }
     }
     
-    func handleTap(geture: UITapGestureRecognizer){
+    func handleTap(_ geture: UITapGestureRecognizer){
         switch geture.state {
-        case .Ended, .Cancelled:
+        case .ended, .cancelled:
             let targetY = panelOpened ? view.center.y + diff : view.center.y * 2.5
 
             if USE_COREANIMATION{
                 let openOrcloseAni = CABasicAnimation(keyPath: "position.y")
-                openOrcloseAni.additive = true
+                openOrcloseAni.isAdditive = true
                 openOrcloseAni.duration = duration
                 openOrcloseAni.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault)
                 
@@ -95,14 +95,14 @@ class ViewController: UIViewController {
                 openOrcloseAni.fromValue = panelView.center.y - targetY
                 openOrcloseAni.toValue = 0
                 if panelOpened{
-                    panelView.layer.addAnimation(openOrcloseAni, forKey: "close")
+                    panelView.layer.add(openOrcloseAni, forKey: "close")
                 }else{
-                    panelView.layer.addAnimation(openOrcloseAni, forKey: "open")
+                    panelView.layer.add(openOrcloseAni, forKey: "open")
                 }
                 panelView.center.y = targetY
             }else{
                 // UIView Animation is additive since iOS 8. You should provide AllowUserInteraction option otherwise your touch can't interact with moving view.
-                UIView.animateWithDuration(duration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 2, options: .AllowUserInteraction, animations: {
+                UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 2, options: .allowUserInteraction, animations: {
                     self.panelView.center.y = targetY
                     }, completion: nil)
             }
