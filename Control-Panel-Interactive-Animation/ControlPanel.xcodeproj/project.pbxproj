@@ -98,6 +98,7 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 6Z8XUV9H6J;
 						DevelopmentTeamName = "Ye Zongyu (Personal Team)";
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -259,6 +260,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = seedante.InteractiveAnimation.UIViewVersion;
 				PRODUCT_NAME = ControlPanel;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -272,6 +274,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = seedante.InteractiveAnimation.UIViewVersion;
 				PRODUCT_NAME = ControlPanel;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
